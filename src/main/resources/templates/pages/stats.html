@@ -5,7 +5,16 @@
       th:with="title='Shliktr - Statistics'">
 
   <th:block layout:fragment="content">
-    <p>Statistics for <span th:text="${week}"><em>week</em></span> go here</p>
+    <p>Statistics for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input> go here</p>
+  </th:block>
+
+  <th:block layout:fragment="extra_scripts">
+  <script>
+  $(function() {
+    $('#weekChooser').focus();
+    $('#weekChooser').change(function(e) { window.location = '/stats/' + $('#weekChooser').val(); });
+  });
+  </script>
   </th:block>
 
 </html>

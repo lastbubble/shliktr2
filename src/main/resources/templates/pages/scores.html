@@ -5,7 +5,15 @@
       th:with="title='Shliktr - Scores'">
 
   <th:block layout:fragment="content">
-    <p>Scores for week <span th:text="${week}"><em>week</em></span> go here</p>
+    <p>Scores for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input> go here</p>
   </th:block>
 
+  <th:block layout:fragment="extra_scripts">
+  <script>
+  $(function() {
+    $('#weekChooser').focus();
+    $('#weekChooser').change(function(e) { window.location = '/scores/' + $('#weekChooser').val(); });
+  });
+  </script>
+  </th:block>
 </html>

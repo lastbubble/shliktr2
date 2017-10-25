@@ -22,7 +22,7 @@ public class GamesController {
 		return games(currentWeekSupplier.get(), model);
 	}
 
-	@RequestMapping("/gamees/{week}")
+	@RequestMapping("/games/{week}")
 	public String games(@PathVariable Integer week, Model model) {
 
 		model.addAttribute("week", week);
