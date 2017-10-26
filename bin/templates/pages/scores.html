@@ -6,6 +6,25 @@
 
   <th:block layout:fragment="content">
     <p>Scores for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input> go here</p>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-5" style="text-align: right;"><h5>Player</h5></div>
+        <div class="col-1" style="text-align: center;"><h5>Score</h5></div>
+        <div class="col-1" style="text-align: right; white-space: nowrap;"><h5>W-L</h5></div>
+      </div>
+      <div class="row" th:each="entry : ${entries}">
+        <div class="col-5" style="text-align: right; vertical-align: middle;">
+          <span th:text="${entry.player().name()}">player name</span>
+         </div>
+        <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
+          <strong><span th:text="${entry.score()}">score</span></strong>
+        </div>
+        <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
+          <strong><span th:text="${entry.gamesWon()}">won</span>&nbsp;-&nbsp;<span th:text="${entry.gamesLost()}">lost</span></strong>
+        </div>
+      </div>
+    </div>
   </th:block>
 
   <th:block layout:fragment="extra_scripts">

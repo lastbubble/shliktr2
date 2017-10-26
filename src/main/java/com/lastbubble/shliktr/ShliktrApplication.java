@@ -1,6 +1,8 @@
 package com.lastbubble.shliktr;
 
+import com.lastbubble.shliktr.domain.Entry;
 import com.lastbubble.shliktr.domain.Game;
+import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.Team;
 
 import java.util.Arrays;
@@ -34,6 +36,20 @@ public class ShliktrApplication {
 				new Game( new Team("DAL", "Dallas"), 24, new Team("PHI", "Philadelphia"), 17),
 				new Game( new Team("DEN", "Denver"), 24, new Team("NYJ", "N.Y. Jets"), 17),
 				new Game( new Team("DET", "Detroit"), 24, new Team("NYG", "N.Y. Giants"), 17)
+			);
+		};
+	}
+
+	@Bean
+	public Function<Integer, Iterable<Entry>> entriesSupplier() {
+
+		return (Integer week) -> {
+			return Arrays.asList(
+				new Entry( new Player("Abcde"), 100, 15, 1),
+				new Entry( new Player("Fghij"), 90, 14, 2),
+				new Entry( new Player("Klmno"), 80, 13, 3),
+				new Entry( new Player("Pqrst"), 70, 12, 4),
+				new Entry( new Player("Uvwxy"), 60, 11, 5)
 			);
 		};
 	}

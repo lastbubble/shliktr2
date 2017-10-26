@@ -1,5 +1,8 @@
 package com.lastbubble.shliktr.web;
 
+import com.lastbubble.shliktr.domain.Entry;
+
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ScoresController {
 
 	private final Supplier<Integer> currentWeekSupplier;
+	private final Function<Integer, Iterable<Entry>> entriesSupplier;
 
 	@Autowired
-	public ScoresController(Supplier<Integer> currentWeekSupplier) { this.currentWeekSupplier = currentWeekSupplier; }
+	public ScoresController(
+		Supplier<Integer> currentWeekSupplier,
+		Function<Integer, Iterable<Entry>> entriesSupplier
+	) {
+
+		this.currentWeekSupplier = currentWeekSupplier;
+		this.entriesSupplier = entriesSupplier;
+	}
 
 	@RequestMapping("/scores")
 	public String scores(Model model) {
@@ -26,6 +37,7 @@ public class ScoresController {
 	public String scores(@PathVariable Integer week, Model model) {
 
 		model.addAttribute("week", week);
+		model.addAttribute("entries", entriesSupplier.apply(week));
 		return "pages/scores";
 	}
 }
