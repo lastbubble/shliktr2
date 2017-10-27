@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout"
+      th:with="title='Shliktr - Entry'">
+
+  <th:block layout:fragment="content">
+    <p>Entry for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input> goes here</p>
+  </th:block>
+
+  <th:block layout:fragment="extra_scripts">
+  <script>
+  $(function() {
+    $('#weekChooser').focus();
+    $('#weekChooser').change(function(e) { window.location = '/entries/' + $('#weekChooser').val(); });
+  });
+  </script>
+  </th:block>
+
+</html>
