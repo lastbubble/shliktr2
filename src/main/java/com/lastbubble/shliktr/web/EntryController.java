@@ -1,5 +1,7 @@
 package com.lastbubble.shliktr.web;
 
+import com.lastbubble.shliktr.domain.Entry;
+import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.PlayerRepository;
 
@@ -16,15 +18,18 @@ public class EntryController {
 
 	private final Supplier<Integer> currentWeekSupplier;
 	private final PlayerRepository playerRepository;
+	private final EntryRepository entryRepository;
 
 	@Autowired
 	public EntryController(
 		Supplier<Integer> currentWeekSupplier,
-		PlayerRepository playerRepository
+		PlayerRepository playerRepository,
+		EntryRepository entryRepository
 	) {
 
 		this.currentWeekSupplier = currentWeekSupplier;
 		this.playerRepository = playerRepository;
+		this.entryRepository = entryRepository;
 	}
 
 	@RequestMapping("/entries")
@@ -44,9 +49,12 @@ public class EntryController {
 
 		Player player = (playerId != null) ? playerRepository.findById(playerId) : null;
 
+		Entry entry = (player != null) ? entryRepository.findFor(week, player) : null;
+
 		model.addAttribute("week", week);
 		model.addAttribute("players", playerRepository.findAll());
 		model.addAttribute("player", player);
-		return "pages/entry";
+		model.addAttribute("entry", entry);
+		return "pages/view-entry";
 	}
 }

@@ -1,16 +1,23 @@
 package com.lastbubble.shliktr;
 
+import com.lastbubble.shliktr.domain.Entry;
+import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Game;
+import com.lastbubble.shliktr.domain.Pick;
 import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.PlayerRepository;
 import com.lastbubble.shliktr.domain.Score;
 import com.lastbubble.shliktr.domain.Stat;
 import com.lastbubble.shliktr.domain.Team;
+import com.lastbubble.shliktr.domain.Winner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,36 +30,36 @@ public class ShliktrApplication {
 		SpringApplication.run(ShliktrApplication.class, args);
 	}
 
+	private final List<Game> games = Arrays.asList(
+		new Game( new Team("ARI", "Arizona"), 24, new Team("WAS", "Washington"), 17),
+		new Game( new Team("ATL", "Atlanta"), 24, new Team("TEN", "Tennessee"), 17),
+		new Game( new Team("BAL", "Baltimore"), 24, new Team("SF", "San Francisco"), 17),
+		new Game( new Team("CAR", "Carolina"), 24, new Team("SEA", "Seattle"), 17),
+		new Game( new Team("CHI", "Chicago"), 24, new Team("PIT", "Pittsburgh"), 17),
+		new Game( new Team("DAL", "Dallas"), 24, new Team("PHI", "Philadelphia"), 17),
+		new Game( new Team("DEN", "Denver"), 24, new Team("NYJ", "N.Y. Jets"), 17),
+		new Game( new Team("DET", "Detroit"), 24, new Team("NYG", "N.Y. Giants"), 17)
+	);
+
+	private final List<Player> players = Arrays.asList(
+		new Player(1, "Abcde"),
+		new Player(2, "Fghij"),
+		new Player(3, "Klmno"),
+		new Player(4, "Pqrst"),
+		new Player(5, "Uvwxy")
+	);
+
 	@Bean
 	public Supplier<Integer> currentWeekSupplier() { return () -> { return 7; }; }
 
 	@Bean
 	public Function<Integer, Iterable<Game>> gamesSupplier() {
 
-		return (Integer week) -> {
-			return Arrays.asList(
-				new Game( new Team("ARI", "Arizona"), 24, new Team("WAS", "Washington"), 17),
-				new Game( new Team("ATL", "Atlanta"), 24, new Team("TEN", "Tennessee"), 17),
-				new Game( new Team("BAL", "Baltimore"), 24, new Team("SF", "San Francisco"), 17),
-				new Game( new Team("CAR", "Carolina"), 24, new Team("SEA", "Seattle"), 17),
-				new Game( new Team("CHI", "Chicago"), 24, new Team("PIT", "Pittsburgh"), 17),
-				new Game( new Team("DAL", "Dallas"), 24, new Team("PHI", "Philadelphia"), 17),
-				new Game( new Team("DEN", "Denver"), 24, new Team("NYJ", "N.Y. Jets"), 17),
-				new Game( new Team("DET", "Detroit"), 24, new Team("NYG", "N.Y. Giants"), 17)
-			);
-		};
+		return (Integer week) -> { return games; };
 	}
 
 	@Bean
 	public PlayerRepository playerRepository() {
-
-		List<Player> players = Arrays.asList(
-			new Player(1, "Abcde"),
-			new Player(2, "Fghij"),
-			new Player(3, "Klmno"),
-			new Player(4, "Pqrst"),
-			new Player(5, "Uvwxy")
-		);
 
 		return new PlayerRepository() {
 
@@ -60,6 +67,37 @@ public class ShliktrApplication {
 
 			@Override public Player findById(int id) {
 				return players.stream().filter(p -> p.id() == id).findFirst().get();
+			}
+		};
+	}
+
+	@Bean
+	public EntryRepository entryRepository() {
+
+		return new EntryRepository() {
+
+			@Override public Entry findFor(int week, Player player) {
+
+				if (player.id() % 2 == 1) {
+
+					AtomicBoolean home = new AtomicBoolean(true);
+					AtomicInteger ranking = new AtomicInteger(16);
+
+					return new Entry(
+						player,
+						games.stream()
+							.map(game ->
+								new Pick(
+									game,
+									home.getAndSet(!home.get()) ? Winner.HOME : Winner.AWAY,
+									ranking.getAndDecrement()
+								)
+							)
+							.collect(Collectors.toList())
+					);
+				}
+
+				return null;
 			}
 		};
 	}
