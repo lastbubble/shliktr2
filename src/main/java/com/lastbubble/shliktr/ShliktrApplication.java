@@ -3,6 +3,7 @@ package com.lastbubble.shliktr;
 import com.lastbubble.shliktr.domain.Entry;
 import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.Player;
+import com.lastbubble.shliktr.domain.Stat;
 import com.lastbubble.shliktr.domain.Team;
 
 import java.util.Arrays;
@@ -50,6 +51,39 @@ public class ShliktrApplication {
 				new Entry( new Player("Klmno"), 80, 13, 3),
 				new Entry( new Player("Pqrst"), 70, 12, 4),
 				new Entry( new Player("Uvwxy"), 60, 11, 5)
+			);
+		};
+	}
+
+	@Bean
+	public Function<Integer, Iterable<Stat>> statsSupplier() {
+
+		return (Integer week) -> {
+			return Arrays.asList(
+				new Stat( new Team("ARI", "Arizona"),
+						Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+					),
+				new Stat( new Team("ATL", "Atlanta"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("BAL", "Baltimore"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("CAR", "Carolina"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("CHI", "Chicago"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("DAL", "Dallas"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("DEN", "Denver"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				),
+				new Stat( new Team("DET", "Detroit"),
+					Arrays.asList( new Stat.Pick(16), new Stat.Pick(15), new Stat.Pick(14))
+				)
 			);
 		};
 	}
