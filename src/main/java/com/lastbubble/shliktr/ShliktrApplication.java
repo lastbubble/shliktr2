@@ -1,12 +1,14 @@
 package com.lastbubble.shliktr;
 
-import com.lastbubble.shliktr.domain.Entry;
 import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.Player;
+import com.lastbubble.shliktr.domain.PlayerRepository;
+import com.lastbubble.shliktr.domain.Score;
 import com.lastbubble.shliktr.domain.Stat;
 import com.lastbubble.shliktr.domain.Team;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -42,15 +44,36 @@ public class ShliktrApplication {
 	}
 
 	@Bean
-	public Function<Integer, Iterable<Entry>> entriesSupplier() {
+	public PlayerRepository playerRepository() {
+
+		List<Player> players = Arrays.asList(
+			new Player(1, "Abcde"),
+			new Player(2, "Fghij"),
+			new Player(3, "Klmno"),
+			new Player(4, "Pqrst"),
+			new Player(5, "Uvwxy")
+		);
+
+		return new PlayerRepository() {
+
+			@Override public Iterable<Player> findAll() { return players; }
+
+			@Override public Player findById(int id) {
+				return players.stream().filter(p -> p.id() == id).findFirst().get();
+			}
+		};
+	}
+
+	@Bean
+	public Function<Integer, Iterable<Score>> scoresSupplier() {
 
 		return (Integer week) -> {
 			return Arrays.asList(
-				new Entry( new Player("Abcde"), 100, 15, 1),
-				new Entry( new Player("Fghij"), 90, 14, 2),
-				new Entry( new Player("Klmno"), 80, 13, 3),
-				new Entry( new Player("Pqrst"), 70, 12, 4),
-				new Entry( new Player("Uvwxy"), 60, 11, 5)
+				new Score( new Player(1, "Abcde"), 100, 15, 1),
+				new Score( new Player(2, "Fghij"), 90, 14, 2),
+				new Score( new Player(3, "Klmno"), 80, 13, 3),
+				new Score( new Player(4, "Pqrst"), 70, 12, 4),
+				new Score( new Player(5, "Uvwxy"), 60, 11, 5)
 			);
 		};
 	}

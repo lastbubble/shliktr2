@@ -13,15 +13,15 @@
         <div class="col-1" style="text-align: center;"><h5>Score</h5></div>
         <div class="col-1" style="text-align: right; white-space: nowrap;"><h5>W-L</h5></div>
       </div>
-      <div class="row" th:each="entry : ${entries}">
+      <div class="row" th:each="score : ${scores}">
         <div class="col-5" style="text-align: right; vertical-align: middle;">
-          <span th:text="${entry.player().name()}">player name</span>
+          <span th:text="${score.player().name()}">player name</span>
          </div>
         <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
-          <strong><span th:text="${entry.score()}">score</span></strong>
+          <strong><span th:text="${score.value()}">score</span></strong>
         </div>
         <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
-          <strong><span th:text="${entry.gamesWon()}">won</span>&nbsp;-&nbsp;<span th:text="${entry.gamesLost()}">lost</span></strong>
+          <strong><span th:text="${score.gamesWon()}">won</span>&nbsp;-&nbsp;<span th:text="${score.gamesLost()}">lost</span></strong>
         </div>
       </div>
     </div>

@@ -5,7 +5,14 @@
       th:with="title='Shliktr - Entry'">
 
   <th:block layout:fragment="content">
-    <p>Entry for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input> goes here</p>
+    <p>Entry for week <input id="weekChooser" th:type="number" min="1" max="17" th:value="${week}"></input>
+       and player
+       <select id="playerChooser">
+        <option th:each="p : ${players}"
+                th:value="${p.id()}" th:text="${p.name()}"
+                th:selected="${p == player}">player</option>
+       </select>
+       goes here</p>
   </th:block>
 
   <th:block layout:fragment="extra_scripts">
@@ -13,6 +20,10 @@
   $(function() {
     $('#weekChooser').focus();
     $('#weekChooser').change(function(e) { window.location = '/entries/' + $('#weekChooser').val(); });
+
+    $('#playerChooser').change(function(e) {
+      window.location = '/entries/' + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
+    });
   });
   </script>
   </th:block>

@@ -1,23 +1,23 @@
 package com.lastbubble.shliktr.domain;
 
-public class Entry {
+public class Score {
 
 	private final Player player;
-	private final int score;
+	private final int value;
 	private final int gamesWon;
 	private final int gamesLost;
 
-	public Entry(Player player, int score, int gamesWon, int gamesLost) {
+	public Score(Player player, int value, int gamesWon, int gamesLost) {
 
 		this.player = player;
-		this.score = score;
+		this.value = value;
 		this.gamesWon = gamesWon;
 		this.gamesLost = gamesLost;
 	}
 
 	public Player player() { return player; }
 
-	public int score() { return score; }
+	public int value() { return value; }
 
 	public int gamesWon() { return gamesWon; }
 

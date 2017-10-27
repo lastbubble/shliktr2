@@ -1,6 +1,7 @@
 package com.lastbubble.shliktr.web;
 
-import com.lastbubble.shliktr.domain.Entry;
+import com.lastbubble.shliktr.domain.Player;
+import com.lastbubble.shliktr.domain.PlayerRepository;
 
 import java.util.function.Supplier;
 
@@ -14,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EntryController {
 
 	private final Supplier<Integer> currentWeekSupplier;
+	private final PlayerRepository playerRepository;
 
 	@Autowired
-	public EntryController(Supplier<Integer> currentWeekSupplier) {
+	public EntryController(
+		Supplier<Integer> currentWeekSupplier,
+		PlayerRepository playerRepository
+	) {
 
 		this.currentWeekSupplier = currentWeekSupplier;
+		this.playerRepository = playerRepository;
 	}
 
 	@RequestMapping("/entries")
@@ -34,9 +40,13 @@ public class EntryController {
 	}
 
 	@RequestMapping("/entries/{week}/player/{player}")
-	public String entry(@PathVariable Integer week, @PathVariable Integer playerId, Model model) {
+	public String entry(@PathVariable Integer week, @PathVariable("player") Integer playerId, Model model) {
+
+		Player player = (playerId != null) ? playerRepository.findById(playerId) : null;
 
 		model.addAttribute("week", week);
+		model.addAttribute("players", playerRepository.findAll());
+		model.addAttribute("player", player);
 		return "pages/entry";
 	}
 }
