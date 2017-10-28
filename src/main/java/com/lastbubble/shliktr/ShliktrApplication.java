@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @SpringBootApplication
 public class ShliktrApplication {
@@ -31,10 +30,6 @@ public class ShliktrApplication {
 		SpringApplication.run(ShliktrApplication.class, args);
 	}
 
-	/*
-	@Bean
-    public SpringSecurityDialect springSecurityDialect() { return new SpringSecurityDialect(); }
-	*/
 	private final List<Game> games = Arrays.asList(
 		new Game( new Team("ARI", "Arizona"), 24, new Team("WAS", "Washington"), 17),
 		new Game( new Team("ATL", "Atlanta"), 24, new Team("TEN", "Tennessee"), 17),
