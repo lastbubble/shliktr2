@@ -15,7 +15,7 @@
        goes here</p>
 
     <div th:unless="${entry}" class="container">
-      <h3><span th:text="${player.name()}">player</span> has not submitted picks for week <span th:text="${week}">week</span>.</h3>
+      <h3 th:if="${player}"><span th:text="${player.name()}">player</span> has not submitted picks for week <span th:text="${week}">week</span>.</h3>
     </div>
 
     <div th:if="${entry}" class="container">
