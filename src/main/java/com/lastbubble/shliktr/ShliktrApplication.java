@@ -1,8 +1,10 @@
 package com.lastbubble.shliktr;
 
+import com.lastbubble.shliktr.dao.JdbcGameRepository;
 import com.lastbubble.shliktr.domain.Entry;
 import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Game;
+import com.lastbubble.shliktr.domain.GameRepository;
 import com.lastbubble.shliktr.domain.Pick;
 import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.PlayerRepository;
@@ -19,9 +21,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootApplication
 public class ShliktrApplication {
@@ -29,17 +33,6 @@ public class ShliktrApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ShliktrApplication.class, args);
 	}
-
-	private final List<Game> games = Arrays.asList(
-		new Game( new Team("ARI", "Arizona"), 24, new Team("WAS", "Washington"), 17),
-		new Game( new Team("ATL", "Atlanta"), 24, new Team("TEN", "Tennessee"), 17),
-		new Game( new Team("BAL", "Baltimore"), 24, new Team("SF", "San Francisco"), 17),
-		new Game( new Team("CAR", "Carolina"), 24, new Team("SEA", "Seattle"), 17),
-		new Game( new Team("CHI", "Chicago"), 24, new Team("PIT", "Pittsburgh"), 17),
-		new Game( new Team("DAL", "Dallas"), 24, new Team("PHI", "Philadelphia"), 17),
-		new Game( new Team("DEN", "Denver"), 24, new Team("NYJ", "N.Y. Jets"), 17),
-		new Game( new Team("DET", "Detroit"), 24, new Team("NYG", "N.Y. Giants"), 17)
-	);
 
 	private final List<Player> players = Arrays.asList(
 		new Player(1, "Abcde"),
@@ -49,13 +42,19 @@ public class ShliktrApplication {
 		new Player(5, "Uvwxy")
 	);
 
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+
+	@Bean
+	public GameRepository gameRepository() { return new JdbcGameRepository(jdbcTemplate); }
+
 	@Bean
 	public Supplier<Integer> currentWeekSupplier() { return () -> { return 7; }; }
 
 	@Bean
-	public Function<Integer, Iterable<Game>> gamesSupplier() {
+	public Function<Integer, List<Game>> gamesSupplier() {
 
-		return (Integer week) -> { return games; };
+		return (Integer week) -> { return gameRepository().findForWeek(week); };
 	}
 
 	@Bean
@@ -85,7 +84,7 @@ public class ShliktrApplication {
 
 					return new Entry(
 						player,
-						games.stream()
+						gamesSupplier().apply(week).stream()
 							.map(game ->
 								new Pick(
 									game,
