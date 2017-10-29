@@ -1,6 +1,7 @@
 package com.lastbubble.shliktr;
 
 import com.lastbubble.shliktr.dao.JdbcGameRepository;
+import com.lastbubble.shliktr.dao.JdbcPlayerRepository;
 import com.lastbubble.shliktr.domain.Entry;
 import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Game;
@@ -58,17 +59,7 @@ public class ShliktrApplication {
 	}
 
 	@Bean
-	public PlayerRepository playerRepository() {
-
-		return new PlayerRepository() {
-
-			@Override public Iterable<Player> findAll() { return players; }
-
-			@Override public Player findById(int id) {
-				return players.stream().filter(p -> p.id() == id).findFirst().get();
-			}
-		};
-	}
+	public PlayerRepository playerRepository() { return new JdbcPlayerRepository(jdbcTemplate); }
 
 	@Bean
 	public EntryRepository entryRepository() {
