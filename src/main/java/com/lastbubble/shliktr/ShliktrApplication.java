@@ -3,12 +3,13 @@ package com.lastbubble.shliktr;
 import com.lastbubble.shliktr.dao.JdbcEntryRepository;
 import com.lastbubble.shliktr.dao.JdbcGameRepository;
 import com.lastbubble.shliktr.dao.JdbcPlayerRepository;
+import com.lastbubble.shliktr.dao.JdbcScoreRepository;
 import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.GameRepository;
-import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.PlayerRepository;
 import com.lastbubble.shliktr.domain.Score;
+import com.lastbubble.shliktr.domain.ScoreRepository;
 import com.lastbubble.shliktr.domain.Stat;
 import com.lastbubble.shliktr.domain.Team;
 
@@ -52,17 +53,12 @@ public class ShliktrApplication {
 	public EntryRepository entryRepository() { return new JdbcEntryRepository(jdbcTemplate); }
 
 	@Bean
-	public Function<Integer, Iterable<Score>> scoresSupplier() {
+	public ScoreRepository scoreRepository() { return new JdbcScoreRepository(jdbcTemplate); }
 
-		return (Integer week) -> {
-			return Arrays.asList(
-				new Score( new Player(1, "Abcde"), 100, 15, 1),
-				new Score( new Player(2, "Fghij"), 90, 14, 2),
-				new Score( new Player(3, "Klmno"), 80, 13, 3),
-				new Score( new Player(4, "Pqrst"), 70, 12, 4),
-				new Score( new Player(5, "Uvwxy"), 60, 11, 5)
-			);
-		};
+	@Bean
+	public Function<Integer, List<Score>> scoresSupplier() {
+
+		return (Integer week) -> { return scoreRepository().findFor(week); };
 	}
 
 	@Bean

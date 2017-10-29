@@ -2,6 +2,7 @@ package com.lastbubble.shliktr.web;
 
 import com.lastbubble.shliktr.domain.Score;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ScoresController {
 
 	private final Supplier<Integer> currentWeekSupplier;
-	private final Function<Integer, Iterable<Score>> scoresSupplier;
+	private final Function<Integer, List<Score>> scoresSupplier;
 
 	@Autowired
 	public ScoresController(
 		Supplier<Integer> currentWeekSupplier,
-		Function<Integer, Iterable<Score>> scoresSupplier
+		Function<Integer, List<Score>> scoresSupplier
 	) {
 
 		this.currentWeekSupplier = currentWeekSupplier;
