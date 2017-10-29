@@ -10,7 +10,7 @@
        <select id="playerChooser">
         <option th:each="p : ${players}"
                 th:value="${p.id()}" th:text="${p.name()}"
-                th:selected="${p == player}">player</option>
+                th:selected="${player != null and player.id() == p.id()}">player</option>
        </select>
        goes here</p>
 
@@ -46,7 +46,9 @@
   <script>
   $(function() {
     $('#weekChooser').focus();
-    $('#weekChooser').change(function(e) { window.location = '/entries/' + $('#weekChooser').val(); });
+    $('#weekChooser').change(function(e) {
+      window.location = '/entries/' + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
+    });
 
     $('#playerChooser').change(function(e) {
       window.location = '/entries/' + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();

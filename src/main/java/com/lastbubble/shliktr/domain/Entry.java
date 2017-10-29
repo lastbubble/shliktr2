@@ -1,11 +1,13 @@
 package com.lastbubble.shliktr.domain;
 
+import java.util.List;
+
 public class Entry {
 
 	private final Player player;
-	private final Iterable<Pick> picks;
+	private final List<Pick> picks;
 
-	public Entry(Player player, Iterable<Pick> picks) {
+	public Entry(Player player, List<Pick> picks) {
 
 		this.player = player;
 		this.picks = picks;
@@ -13,5 +15,5 @@ public class Entry {
 
 	public Player player() { return player; }
 
-	public Iterable<Pick> picks() { return picks; }
+	public List<Pick> picks() { return picks; }
 }

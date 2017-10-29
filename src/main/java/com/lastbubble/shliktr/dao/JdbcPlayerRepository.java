@@ -1,9 +1,7 @@
 package com.lastbubble.shliktr.dao;
 
-import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.Player;
 import com.lastbubble.shliktr.domain.PlayerRepository;
-import com.lastbubble.shliktr.domain.Team;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
