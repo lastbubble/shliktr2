@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface GameRepository {
 
-	List<Game> findForWeek(int week);
+	List<Game.Score> findScoresForWeek(int week);
 }

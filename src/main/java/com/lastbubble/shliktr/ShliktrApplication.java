@@ -41,9 +41,9 @@ public class ShliktrApplication {
 	public Supplier<Integer> currentWeekSupplier() { return () -> { return 7; }; }
 
 	@Bean
-	public Function<Integer, List<Game>> gamesSupplier() {
+	public Function<Integer, List<Game.Score>> gamesSupplier() {
 
-		return (Integer week) -> { return gameRepository().findForWeek(week); };
+		return (Integer week) -> { return gameRepository().findScoresForWeek(week); };
 	}
 
 	@Bean

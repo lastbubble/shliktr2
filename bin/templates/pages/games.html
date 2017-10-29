@@ -13,20 +13,20 @@
         <div class="col-2" style="text-align: center;"><h5>@</h5></div>
         <div class="col-5" style="text-align: left;"><h5>Home</h5></div>
       </div>
-      <div class="row" th:each="game : ${games}">
+      <div class="row" th:each="score : ${scores}">
         <div class="col-sm" style="text-align: right; vertical-align: middle;">
-          <span th:text="${game.awayTeam().location()}">away location</span>
-          <img th:src="|/images/${game.awayTeam().abbr()}.svg|" width="24" />
+          <span th:text="${score.game().awayTeam().location()}">away location</span>
+          <img th:src="|/images/${score.game().awayTeam().abbr()}.svg|" width="24" />
          </div>
         <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
-          <strong><span th:text="${game.awayScore()}">away score</span></strong>
+          <strong><span th:text="${score.away()}">away score</span></strong>
         </div>
         <div class="col-1" style="text-align: left; vertical-align: middle; border: 1px solid;">
-          <strong><span th:text="${game.homeScore()}">home score</span></strong>
+          <strong><span th:text="${score.home()}">home score</span></strong>
         </div>
         <div class="col-sm" style="text-align: left; vertical-align: middle;">
-          <img th:src="|/images/${game.homeTeam().abbr()}.svg|" width="24" />
-          <span th:text="${game.homeTeam().location()}">home location</span>
+          <img th:src="|/images/${score.game().homeTeam().abbr()}.svg|" width="24" />
+          <span th:text="${score.game().homeTeam().location()}">home location</span>
         </div>
       </div>
     </div>

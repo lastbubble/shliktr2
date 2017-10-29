@@ -49,9 +49,7 @@ public class JdbcEntryRepository implements EntryRepository {
 					new Pick(
 						new Game(
 							new Team(rs.getString("a.abbr").toUpperCase(), rs.getString("a.location")),
-							rs.getInt("g.away_score"),
-							new Team(rs.getString("h.abbr").toUpperCase(), rs.getString("h.location")),
-							rs.getInt("g.home_score")
+							new Team(rs.getString("h.abbr").toUpperCase(), rs.getString("h.location"))
 						),
 						"HOME".equals(rs.getString("p.winner")) ? Winner.HOME : Winner.AWAY,
 						rs.getInt("p.ranking")
