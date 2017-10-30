@@ -2,6 +2,7 @@ package com.lastbubble.shliktr.web;
 
 import com.lastbubble.shliktr.domain.Stat;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StatisticsController {
 
 	private final Supplier<Integer> currentWeekSupplier;
-	private final Function<Integer, Iterable<Stat>> statsSupplier;
+	private final Function<Integer, List<Stat>> statsSupplier;
 
 	@Autowired
 	public StatisticsController(
 		Supplier<Integer> currentWeekSupplier,
-		Function<Integer, Iterable<Stat>> statsSupplier
+		Function<Integer, List<Stat>> statsSupplier
 	) {
 
 		this.currentWeekSupplier = currentWeekSupplier;
