@@ -18,20 +18,16 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 
 public class JdbcStatsSupplier implements Function<Integer, List<Stat>> {
 
+	private final Map<Integer, Team> teamsById;
 	private final JdbcTemplate jdbc;
 
-	public JdbcStatsSupplier(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+	public JdbcStatsSupplier(Map<Integer, Team> teamsById, JdbcTemplate jdbc) {
+
+		this.teamsById = teamsById;
+		this.jdbc = jdbc;
+	}
 
 	@Override public List<Stat> apply(Integer week) {
-
-		Map<Integer, Team> teamsById = new HashMap<>();
-
-		jdbc.query(
-			"SELECT id, abbr, location FROM team",
-			(RowCallbackHandler) (rs) -> {
-				teamsById.put(rs.getInt("id"), new Team(rs.getString("abbr"), rs.getString("location")));
-			}
-		);
 
 		Map<Integer, List<Pick>> picksByTeam = new HashMap<>();
 		teamsById.forEach((k, v) -> picksByTeam.put(k, new ArrayList<Pick>()));

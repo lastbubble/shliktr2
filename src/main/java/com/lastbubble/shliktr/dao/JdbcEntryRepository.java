@@ -5,16 +5,22 @@ import com.lastbubble.shliktr.domain.EntryRepository;
 import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.Pick;
 import com.lastbubble.shliktr.domain.Player;
-import com.lastbubble.shliktr.domain.Team;
 import com.lastbubble.shliktr.domain.Winner;
+
+import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcEntryRepository implements EntryRepository {
 
+	private final Map<Integer, Game> gamesById;
 	private final JdbcTemplate jdbc;
 
-	public JdbcEntryRepository(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+	public JdbcEntryRepository(Map<Integer, Game> gamesById, JdbcTemplate jdbc) {
+
+		this.gamesById = gamesById;
+		this.jdbc = jdbc;
+	}
 
 	@Override public Entry findFor(int week, Player player) {
 
@@ -29,30 +35,15 @@ public class JdbcEntryRepository implements EntryRepository {
 		return new Entry(
 			player,
 			jdbc.query(
-				String.join("",
-					"SELECT ",
-					"a.abbr, a.location, g.away_score, h.abbr, h.location, g.home_score, ",
-					"p.winner, p.ranking",
-					" FROM ",
-					"pick p JOIN game g ON p.game_id = g.id, team a, team h",
-					" WHERE ",
-					"p.entry_id = ?",
-					" AND ",
-					"a.id = g.away_team_id",
-					" AND ",
-					"h.id = g.home_team_id",
-					" ORDER BY ",
-					"g.id"
-				),
+				"SELECT game_id, winner, ranking FROM pick WHERE entry_id = ? ORDER BY game_id",
 				new Object[] { entryId },
 				(rs, rowNum) ->
 					new Pick(
-						new Game(
-							new Team(rs.getString("a.abbr").toUpperCase(), rs.getString("a.location")),
-							new Team(rs.getString("h.abbr").toUpperCase(), rs.getString("h.location"))
-						),
-						"HOME".equals(rs.getString("p.winner")) ? Winner.HOME : Winner.AWAY,
-						rs.getInt("p.ranking")
+						gamesById.get(rs.getInt("game_id")),
+						"HOME".equals(rs.getString("winner")) ? Winner.HOME :
+							"AWAY".equals(rs.getString("winner")) ? Winner.AWAY :
+								null,
+						rs.getInt("ranking")
 					)
 			)
 		);

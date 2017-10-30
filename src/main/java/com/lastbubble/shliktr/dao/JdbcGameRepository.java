@@ -1,44 +1,35 @@
 package com.lastbubble.shliktr.dao;
 
+import static com.lastbubble.shliktr.domain.Game.Score;
+
 import com.lastbubble.shliktr.domain.Game;
 import com.lastbubble.shliktr.domain.GameRepository;
-import com.lastbubble.shliktr.domain.Team;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcGameRepository implements GameRepository {
 
+	private final Map<Integer, Game> gamesById;
 	private final JdbcTemplate jdbc;
 
-	public JdbcGameRepository(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+	public JdbcGameRepository(Map<Integer, Game> gamesById, JdbcTemplate jdbc) {
 
-	@Override public List<Game.Score> findScoresForWeek(int week) {
+		this.gamesById = gamesById;
+		this.jdbc = jdbc;
+	}
+
+	@Override public List<Score> findScoresForWeek(int week) {
 
 		return jdbc.query(
-			String.join("",
-				"SELECT ",
-				"a.abbr, a.location, h.abbr, h.location, g.away_score, g.home_score",
-				" FROM ",
-				"game g, team a, team h",
-				" WHERE ",
-				"g.week_id = ?",
-				" AND ",
-				"a.id = g.away_team_id",
-				" AND ",
-				"h.id = g.home_team_id"
-			),
+			"SELECT id, away_score, home_score FROM game WHERE week_id = ?",
 			new Object[] { week },
 			(rs, rowNum) ->
-				new Game(
-						new Team(rs.getString("a.abbr").toUpperCase(), rs.getString("a.location")),
-						new Team(rs.getString("h.abbr").toUpperCase(), rs.getString("h.location"))
-					)
-					.score(
-						rs.getInt("g.away_score"),
-						rs.getInt("g.home_score")
-					)
+				gamesById
+					.get(rs.getInt("id"))
+					.score(rs.getInt("away_score"), rs.getInt("home_score"))
 		);
 	}
 }
