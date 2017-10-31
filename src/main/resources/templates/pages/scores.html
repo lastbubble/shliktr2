@@ -28,11 +28,14 @@
   </th:block>
 
   <th:block layout:fragment="extra_scripts">
-  <script>
+  <script th:inline="javascript">
+  /*<![CDATA[*/
   $(function() {
+    var base = /*[[@{/scores/}]]*/ '/scores/';
     $('#weekChooser').focus();
-    $('#weekChooser').change(function(e) { window.location = '/scores/' + $('#weekChooser').val(); });
+    $('#weekChooser').change(function(e) { window.location = base + $('#weekChooser').val(); });
   });
+  /*]]>*/
   </script>
   </th:block>
 </html>

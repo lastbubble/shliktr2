@@ -28,10 +28,10 @@
       <div class="row" th:each="pick : ${entry.picks()}">
         <div class="col-3 awayTeam" th:classappend="${pick.winner().name() == 'AWAY'} ? 'selectedWinner' : ''">
           <span th:text="${pick.game().awayTeam().location()}">away location</span>
-          <img th:src="|/images/${pick.game().awayTeam().abbr()}.svg|" width="24" />
+          <img th:src="|@{/images}/${pick.game().awayTeam().abbr()}.svg|" width="24" />
          </div>
         <div class="col-3 homeTeam" th:classappend="${pick.winner().name() == 'HOME'} ? 'selectedWinner' : ''">
-          <img th:src="|/images/${pick.game().homeTeam().abbr()}.svg|" width="24" />
+          <img th:src="|@{/images}/${pick.game().homeTeam().abbr()}.svg|" width="24" />
           <span th:text="${pick.game().homeTeam().location()}">home location</span>
         </div>
         <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
@@ -43,17 +43,20 @@
   </th:block>
 
   <th:block layout:fragment="extra_scripts">
-  <script>
+  <script th:inline="javascript">
+  /*<![CDATA[*/
   $(function() {
+    var base = /*[[@{/entries/}]]*/ '/entries/';
     $('#weekChooser').focus();
     $('#weekChooser').change(function(e) {
-      window.location = '/entries/' + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
+      window.location = base + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
     });
 
     $('#playerChooser').change(function(e) {
-      window.location = '/entries/' + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
+      window.location = base + $('#weekChooser').val() + '/player/' + $('#playerChooser').val();
     });
   });
+  /*]]>*/
   </script>
   </th:block>
 

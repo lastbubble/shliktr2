@@ -13,16 +13,16 @@
           Weekly
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/games">Games</a>
-          <a class="dropdown-item" href="/entries">Entries</a>
-          <a class="dropdown-item" href="/scores">Scores</a>
+          <a class="dropdown-item" th:href="@{/games}">Games</a>
+          <a class="dropdown-item" th:href="@{/entries}">Entries</a>
+          <a class="dropdown-item" th:href="@{/scores}">Scores</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/stats">Statistics</a>
-          <a class="dropdown-item" href="/predictions">Predictions</a>
+          <a class="dropdown-item" th:href="@{/stats}">Statistics</a>
+          <a class="dropdown-item" th:href="@{/predictions}">Predictions</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/season">Season</a>
+        <a class="nav-link" href="@{/season}">Season</a>
       </li>
     </ul>
     <ul sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right">
@@ -33,7 +33,7 @@
           <span class="glyphicon glyphicon-chevron-down"></span>
         </a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="/logout">Log Out</a>
+          <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
         </div>
       </li>
     </ul>

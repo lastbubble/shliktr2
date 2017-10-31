@@ -16,7 +16,7 @@
       <div class="row" th:each="score : ${scores}">
         <div class="col-sm" style="text-align: right; vertical-align: middle;">
           <span th:text="${score.game().awayTeam().location()}">away location</span>
-          <img th:src="|/images/${score.game().awayTeam().abbr()}.svg|" width="24" />
+          <img th:src="|@{/images}/${score.game().awayTeam().abbr()}.svg|" width="24" />
          </div>
         <div class="col-1" style="text-align: right; vertical-align: middle; border: 1px solid;">
           <strong><span th:text="${score.away()}">away score</span></strong>
@@ -25,7 +25,7 @@
           <strong><span th:text="${score.home()}">home score</span></strong>
         </div>
         <div class="col-sm" style="text-align: left; vertical-align: middle;">
-          <img th:src="|/images/${score.game().homeTeam().abbr()}.svg|" width="24" />
+          <img th:src="|@{/images}/${score.game().homeTeam().abbr()}.svg|" width="24" />
           <span th:text="${score.game().homeTeam().location()}">home location</span>
         </div>
       </div>
@@ -33,11 +33,14 @@
   </th:block>
 
   <th:block layout:fragment="extra_scripts">
-  <script>
+  <script th:inline="javascript">
+  /*<![CDATA[*/
   $(function() {
+    var base = /*[[@{/games/}]]*/ '/games/';
     $('#weekChooser').focus();
-    $('#weekChooser').change(function(e) { window.location = '/games/' + $('#weekChooser').val(); });
+    $('#weekChooser').change(function(e) { window.location = base + $('#weekChooser').val(); });
   });
+  /*]]>*/
   </script>
   </th:block>
 
