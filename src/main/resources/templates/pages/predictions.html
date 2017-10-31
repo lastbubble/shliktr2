@@ -22,7 +22,7 @@
         </div>
         <div class="col-9" style="text-align: left; vertical-align: middle; border: 1px solid;">
           <span th:each="team,iterStat : ${prediction.mustWins()}">
-            <img th:src="|/images/${stat.team().abbr()}.svg|" width="24" />
+            <img th:src="|/images/${team.abbr()}.svg|" width="24" />
             <strong><span th:text="${team.abbr()}">team abbr</span></strong><span th:if="${not iterStat.last}">, </span>
           </span>
         </div>

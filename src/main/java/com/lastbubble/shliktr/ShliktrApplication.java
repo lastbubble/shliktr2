@@ -67,6 +67,7 @@ public class ShliktrApplication {
 				gamesById.put(
 					rs.getInt("id"),
 					new Game(
+						rs.getInt("id"),
 						teamsById().get(rs.getInt("away_team_id")),
 						teamsById().get(rs.getInt("home_team_id"))
 					)
@@ -130,6 +131,6 @@ public class ShliktrApplication {
 	@Bean
 	public Function<Integer, List<Prediction>> predictionsSupplier() {
 
-		return new Predictor(entryRepository());
+		return new Predictor(gameRepository(), entryRepository());
 	}
 }
