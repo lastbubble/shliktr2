@@ -14,7 +14,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 
 public class JdbcStatsSupplier implements Function<Integer, List<Stat>> {
 
@@ -46,7 +45,7 @@ public class JdbcStatsSupplier implements Function<Integer, List<Stat>> {
 				"t.id, p.ranking DESC"
 			),
 			new Object[] { week },
-			(RowCallbackHandler) (rs) -> {
+			(rs) -> {
 				picksByTeam.get(rs.getInt("t.id")).add( new Pick(rs.getInt("p.ranking")));
 			}
 		);

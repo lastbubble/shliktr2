@@ -6,6 +6,57 @@
 
   <th:block layout:fragment="content">
     <p>Season results (scores and winnings) go here</p>
+    <div id="grid"></div>
+  </th:block>
+
+  <th:block layout:fragment="extra_scripts">
+  <script>
+  $(function() {
+
+    $('#grid').jsGrid({
+
+      height: '90%',
+      width: '100%',
+ 
+      sorting: true,
+      autoload: true,
+ 
+      fields: [
+        { name:    "name", title: "Player", type: "text",   width: 40 },
+        { name:   "score", title: "Score",  type: "number", width: 15 },
+        { name:   "total", title: "Total",  type: "number", width: 15 },
+        { name:  "score1", title: "",       type: "number", width: 5 },
+        { name:  "score2", title: "",       type: "number", width: 5 },
+        { name:  "score3", title: "",       type: "number", width: 5 },
+        { name:  "score4", title: "",       type: "number", width: 5 },
+        { name:  "score5", title: "",       type: "number", width: 5 },
+        { name:  "score6", title: "",       type: "number", width: 5 },
+        { name:  "score7", title: "",       type: "number", width: 5 },
+        { name:  "score8", title: "",       type: "number", width: 5 },
+        { name:  "score9", title: "",       type: "number", width: 5 },
+        { name: "score10", title: "",       type: "number", width: 5 },
+        { name: "score11", title: "",       type: "number", width: 5 },
+        { name: "score12", title: "",       type: "number", width: 5 },
+        { name: "score13", title: "",       type: "number", width: 5 },
+        { name: "score14", title: "",       type: "number", width: 5 },
+        { name: "score15", title: "",       type: "number", width: 5 },
+        { name: "score16", title: "",       type: "number", width: 5 },
+        { name: "score17", title: "",       type: "number", width: 5 }
+      ],
+
+      controller: {
+        loadData: function(filter) {
+          return $.ajax({
+            type: 'GET',
+            url: 'season.json',
+            data: filter,
+            dataType: 'JSON'
+          });
+        }
+      }
+    });
+  });
+  </script>
   </th:block>
 
 </html>

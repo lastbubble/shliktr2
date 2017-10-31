@@ -12,6 +12,7 @@ import com.lastbubble.shliktr.domain.Prediction;
 import com.lastbubble.shliktr.domain.Predictor;
 import com.lastbubble.shliktr.domain.Score;
 import com.lastbubble.shliktr.domain.ScoreRepository;
+import com.lastbubble.shliktr.domain.SeasonScore;
 import com.lastbubble.shliktr.domain.Stat;
 import com.lastbubble.shliktr.domain.Team;
 
@@ -132,5 +133,11 @@ public class ShliktrApplication {
 	public Function<Integer, List<Prediction>> predictionsSupplier() {
 
 		return new Predictor(gameRepository(), entryRepository());
+	}
+
+	@Bean
+	public Supplier<List<SeasonScore>> seasonScoresSupplier() {
+
+		return () -> scoreRepository().findAll();
 	}
 }
